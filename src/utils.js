@@ -1,6 +1,6 @@
 const initAuth = () => {
   return window.gapi.auth2.init({
-    client_id: "YOUR_CLIENT_ID", //paste your client ID here
+    client_id: process.env.REACT_APP_GA_CLIENT_ID, //paste your client ID here
     scope: "https://www.googleapis.com/auth/analytics.readonly",
   });
 };
@@ -10,6 +10,7 @@ const checkSignedIn = () => {
     initAuth() //calls the previous function
       .then(() => {
         const auth = window.gapi.auth2.getAuthInstance(); //returns the GoogleAuth object
+        console.log("USER:", auth.currentUser);
         resolve(auth.isSignedIn.get()); //returns whether the current user is currently signed in
       })
       .catch((error) => {
@@ -42,7 +43,7 @@ const startClientHelper = () => {
   // 2. Initialize the JavaScript client library.
   window.gapi.client
     .init({
-      apiKey: "YOUR_API_KEY",
+      apiKey: process.env.API_KEY_GOOGLE,
       // Your API key will be automatically added to the Discovery Document URLs.
       discoveryDocs: ["https://people.googleapis.com/$discovery/rest"],
       // clientId and scope are optional if auth is not required.
